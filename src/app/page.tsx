@@ -3,6 +3,7 @@ import 'react-data-grid/lib/styles.css';
 
 import DataGrid, { RenderCellProps, RenderEditCellProps, RenderRowProps, Row, textEditor } from 'react-data-grid';
 import { useState } from 'react';
+import TextEditor from '@/components/TextEditor';
 
 type RowType = {
   name: string,
@@ -16,26 +17,14 @@ const Test = (props: RenderCellProps<RowType>) => {
   const { row, column } = props
   const { key } = column
 
-  console.log(row)
-
   if (row.errorMessage) {
-    return <div style={{ background: "yellow" }}>{row[key]}</div>
+    return <div style={{ background: "yellow", height: "100px" }}>
+      {row[key]}
+      <p>악!!!!!계정 다시 입력해줘어어!!!</p>
+    </div>
   }
   return <div>{row[key]}</div>
 }
-
-
-const TextEditor = (props: RenderEditCellProps<RowType>) => {
-  const { row, column } = props
-  const { key } = column
-  console.log(props)
-
-  if (row.errorMessage) {
-    return <div style={{ background: "yellow" }}>{row[key]}</div>
-  }
-  return <div>{row[key]}</div>
-}
-
 
 
 const columns = [
@@ -53,12 +42,6 @@ const rowsData: RowType[] = [
 ];
 
 
-function myRowRenderer(key: React.Key, props: RenderRowProps<RowType>) {
-  return (
-    <Row {...props} key={key} />
-  );
-}
-
 
 export default function Home() {
   const [rows, setRows] = useState(rowsData);
@@ -72,7 +55,6 @@ export default function Home() {
       columns={columns}
       rows={rows}
       onRowsChange={setRows}
-      renderers={{ renderRow: myRowRenderer }}
       onCellContextMenu={({ row }, event) => {
         event.preventGridDefault();
         console.log(row, event)
